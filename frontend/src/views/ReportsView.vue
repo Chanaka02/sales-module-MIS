@@ -6,7 +6,7 @@
         <p>Sales performance metrics and insights</p>
       </div>
       <button class="btn btn-primary" @click="exportData" :disabled="exporting">
-        {{ exporting ? 'Exporting...' : '📤 Export to MIS' }}
+        {{ exporting ? 'Exporting...' : 'Export to MIS' }}
       </button>
     </div>
 
@@ -25,14 +25,14 @@
       <!-- Revenue Overview -->
       <div class="stats-grid" v-if="revenue">
         <div class="card stat-card">
-          <div class="stat-icon">💰</div>
+          <div class="stat-icon"></div>
           <div class="stat-info">
             <span class="stat-value">Rs. {{ fmt(revenue.total_revenue) }}</span>
             <span class="stat-label">Total Revenue</span>
           </div>
         </div>
         <div class="card stat-card">
-          <div class="stat-icon">🧾</div>
+          <div class="stat-icon"></div>
           <div class="stat-info">
             <span class="stat-value">{{ revenue.total_transactions }}</span>
             <span class="stat-label">Total Transactions</span>
