@@ -122,3 +122,13 @@ func (s *InvoiceService) GenerateInvoice(saleID int) (*models.Invoice, error) {
 	tx.Commit()
 	return s.GetInvoice(invoiceID)
 }
+
+func (s *InvoiceService) Delete(id int) error {
+        _, err := s.db.Exec(`DELETE FROM invoices WHERE id=$1`, id)
+        return err
+}
+
+func (s *InvoiceService) UpdateStatus(id int, status string) error {
+        _, err := s.db.Exec(`UPDATE invoices SET status=$1, updated_at=CURRENT_TIMESTAMP WHERE id=$2`, status, id)
+        return err
+}
