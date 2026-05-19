@@ -30,6 +30,15 @@ export const useInvoicesStore = defineStore('invoices', {
     async generateInvoice(saleId) {
       const { data } = await api.post(`/invoices/generate/${saleId}`)
       return data
+    },
+    async deleteInvoice(id) {
+      await api.delete(`/invoices/${id}`)
+      this.invoices = this.invoices.filter(i => i.id !== id)
+    },
+    async updateStatus(id, status) {
+      await api.patch(`/invoices/${id}/status`, { status })
+      const inv = this.invoices.find(i => i.id === id)
+      if (inv) inv.status = status
     }
   }
 })
