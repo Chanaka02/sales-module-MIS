@@ -36,7 +36,7 @@ func Connect(cfg *config.Config) (*sql.DB, error) {
 	}
 
 	DB = db
-	log.Println("✅ Database connected successfully")
+	log.Println("Database connected successfully")
 	return db, nil
 }
 
