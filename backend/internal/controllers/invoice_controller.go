@@ -62,3 +62,30 @@ func (ic *InvoiceController) Generate(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, invoice)
 }
+
+func (ic *InvoiceController) Delete(c *gin.Context) {
+        numericId, _ := strconv.Atoi(c.Param("id"))
+        if err := ic.service.Delete(numericId); err != nil {
+                c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                return
+        }
+        c.JSON(http.StatusOK, gin.H{"message": "invoice deleted"})
+}
+
+type updateInvoiceStatusReq struct {
+        Status string `json:"status"`
+}
+
+func (ic *InvoiceController) UpdateStatus(c *gin.Context) {
+        numericId, _ := strconv.Atoi(c.Param("id"))
+        var req updateInvoiceStatusReq
+        if err := c.ShouldBindJSON(&req); err != nil {
+                c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+                return
+        }
+        if err := ic.service.UpdateStatus(numericId, req.Status); err != nil {
+                c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                return
+        }
+        c.JSON(http.StatusOK, gin.H{"message": "status updated"})
+}
