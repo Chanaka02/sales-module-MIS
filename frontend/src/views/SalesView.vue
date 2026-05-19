@@ -5,7 +5,7 @@
         <h1>Sales Transactions</h1>
         <p>Manage all your sales orders</p>
       </div>
-      <button class="btn btn-primary" @click="showCreateModal = true" id="create-sale-btn">➕ New Sale</button>
+      <button class="btn btn-primary" @click="openCreateModal" id="create-sale-btn">New Sale</button>
     </div>
 
     <!-- Filters -->
@@ -52,15 +52,15 @@
               <td class="text-muted">{{ formatDate(sale.created_at) }}</td>
               <td>
                 <div class="action-btns">
-                  <button class="btn btn-ghost btn-sm" @click="viewSale(sale.id)" title="View">👁</button>
-                  <button v-if="sale.status === 'pending'" class="btn btn-success btn-sm" @click="completeSale(sale.id)" title="Complete">✓</button>
-                  <button v-if="sale.status === 'pending'" class="btn btn-danger btn-sm" @click="cancelSale(sale.id)" title="Cancel">✕</button>
+                  <button class="btn btn-ghost btn-sm" @click="viewSale(sale.id)" title="View">View</button>
+                  <button v-if="sale.status === 'pending'" class="btn btn-success btn-sm" @click="completeSale(sale.id)" title="Complete">Complete</button>
+                  <button v-if="sale.status === 'pending'" class="btn btn-danger btn-sm" @click="cancelSale(sale.id)" title="Cancel">Cancel</button>
                 </div>
               </td>
             </tr>
             <tr v-if="!store.sales.length">
               <td colspan="9" class="empty-state">
-                <div class="icon">📦</div>
+                <div class="icon"></div>
                 <h3>No sales found</h3>
                 <p>Create your first sale to get started</p>
               </td>
@@ -71,9 +71,9 @@
 
       <!-- Pagination -->
       <div class="pagination" v-if="store.pagination.totalPages > 1">
-        <button @click="goPage(store.pagination.page - 1)" :disabled="store.pagination.page <= 1">← Prev</button>
+        <button @click="goPage(store.pagination.page - 1)" :disabled="store.pagination.page <= 1">Prev</button>
         <button v-for="p in visiblePages" :key="p" @click="goPage(p)" :class="{ active: p === store.pagination.page }">{{ p }}</button>
-        <button @click="goPage(store.pagination.page + 1)" :disabled="store.pagination.page >= store.pagination.totalPages">Next →</button>
+        <button @click="goPage(store.pagination.page + 1)" :disabled="store.pagination.page >= store.pagination.totalPages">Next</button>
       </div>
     </template>
 
@@ -131,9 +131,9 @@
           </select>
           <input v-model.number="item.quantity" type="number" min="1" class="form-control" placeholder="Qty" style="width:80px" required />
           <input v-model.number="item.unit_price" type="number" min="0" step="0.01" class="form-control" placeholder="Price" style="width:130px" required />
-          <button type="button" class="btn btn-danger btn-sm" @click="removeItem(i)" v-if="newSale.items.length > 1">✕</button>
+          <button type="button" class="btn btn-danger btn-sm" @click="removeItem(i)" v-if="newSale.items.length > 1">X</button>
         </div>
-        <button type="button" class="btn btn-ghost btn-sm mt-1" @click="addItem">➕ Add Item</button>
+        <button type="button" class="btn btn-ghost btn-sm mt-1" @click="addItem">Add Item</button>
 
       </form>
 
@@ -228,6 +228,10 @@ export default {
       } catch (err) {
         alert(err.response?.data?.error || 'Failed to create sale')
       } finally { this.creating = false }
+    },
+    async openCreateModal() {
+      this.showCreateModal = true
+      await this.loadMasterData()
     },
     async loadMasterData() {
       try {
