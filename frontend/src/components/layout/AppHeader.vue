@@ -8,12 +8,12 @@
         <span class="search-icon">🔍</span>
         <input type="text" placeholder="Search..." class="search-input" />
       </div>
-      <button class="header-btn" title="Notifications">🔔</button>
+      <button class="header-btn" title="Notifications"></button>
       <div class="user-menu" @click="showMenu = !showMenu">
         <div class="user-avatar">{{ userInitial }}</div>
         <span class="user-name">{{ user?.username || 'Admin' }}</span>
         <div class="dropdown" v-if="showMenu">
-          <button @click="logout">🚪 Logout</button>
+          <button @click="logout">Logout</button>
         </div>
       </div>
     </div>
