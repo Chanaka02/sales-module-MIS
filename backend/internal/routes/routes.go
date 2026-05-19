@@ -48,9 +48,14 @@ func Setup(r *gin.Engine, db *sql.DB) {
 			protected.GET("/invoices", invoiceCtrl.List)
 			protected.GET("/invoices/:id", invoiceCtrl.Get)
 			protected.POST("/invoices/generate/:saleId", invoiceCtrl.Generate)
+                        protected.PATCH("/invoices/:id/status", invoiceCtrl.UpdateStatus)
+                        protected.DELETE("/invoices/:id", invoiceCtrl.Delete)
 
 			// Customers
 			protected.GET("/customers", customerCtrl.List)
+                        protected.POST("/customers", customerCtrl.Create)
+                        protected.PUT("/customers/:id", customerCtrl.Update)
+                        protected.DELETE("/customers/:id", customerCtrl.Delete)
 			protected.GET("/customers/:id/history", customerCtrl.GetHistory)
 
 			// Reports
