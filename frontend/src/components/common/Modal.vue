@@ -4,7 +4,7 @@
       <div class="modal-content" :style="{ maxWidth: maxWidth }">
         <div class="modal-header">
           <h3>{{ title }}</h3>
-          <button class="btn btn-icon btn-ghost" @click="$emit('close')">✕</button>
+          <button class="btn btn-icon btn-ghost" @click="$emit('close')">X</button>
         </div>
         <div class="modal-body">
           <slot />
