@@ -34,7 +34,7 @@ func (s *IntegrationService) CheckInventory(productID int, quantity int) (bool, 
 	url := fmt.Sprintf("%s/inventory/check?product_id=%d&quantity=%d", s.inventoryURL, productID, quantity)
 	resp, err := s.retryRequest("GET", url, nil)
 	if err != nil {
-		log.Printf("⚠️ Inventory check failed (assuming available): %v", err)
+		log.Printf("Inventory check failed (assuming available): %v", err)
 		return true, nil // Graceful degradation
 	}
 	defer resp.Body.Close()
@@ -48,7 +48,7 @@ func (s *IntegrationService) PushRevenueToFinance(data map[string]interface{}) e
 	body, _ := json.Marshal(data)
 	_, err := s.retryRequest("POST", s.financeURL+"/revenue", body)
 	if err != nil {
-		log.Printf("⚠️ Finance push failed: %v", err)
+		log.Printf("Finance push failed: %v", err)
 		return err
 	}
 	return nil
@@ -59,7 +59,7 @@ func (s *IntegrationService) SyncCustomerToCRM(customerID int) error {
 	url := fmt.Sprintf("%s/customers/sync/%d", s.crmURL, customerID)
 	_, err := s.retryRequest("POST", url, nil)
 	if err != nil {
-		log.Printf("⚠️ CRM sync failed: %v", err)
+		log.Printf("CRM sync failed: %v", err)
 		return err
 	}
 	return nil
