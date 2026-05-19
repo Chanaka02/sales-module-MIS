@@ -2,7 +2,7 @@
   <div class="login-page">
     <div class="login-card card">
       <div class="login-header">
-        <div class="login-logo">📊</div>
+        <div class="login-logo"></div>
         <h1>SalesHub</h1>
         <p>Sign in to your admin dashboard</p>
       </div>
@@ -21,7 +21,7 @@
         <p v-if="error" class="error-msg">{{ error }}</p>
 
         <button type="submit" class="btn btn-primary btn-lg login-btn" :disabled="loading" id="login-submit">
-          {{ loading ? 'Signing in...' : '🔐 Sign In' }}
+          {{ loading ? 'Signing in...' : 'Sign In' }}
         </button>
 
         <p class="login-hint">Demo: admin / admin123</p>
