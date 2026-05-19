@@ -98,3 +98,25 @@ func (cc *CustomerController) GetHistory(c *gin.Context) {
 		TotalPages: int(math.Ceil(float64(total) / float64(limit))),
 	})
 }
+
+func (cc *CustomerController) Create(c *gin.Context) {
+        var cust models.Customer
+        if err := c.ShouldBindJSON(&cust); err != nil { c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}); return }
+        err := cc.db.QueryRow(`INSERT INTO customers (name, email, phone, address, company) VALUES ($1, $2, $3, $4, $5) RETURNING id, created_at, updated_at`, cust.Name, cust.Email, cust.Phone, cust.Address, cust.Company).Scan(&cust.ID, &cust.CreatedAt, &cust.UpdatedAt)
+        if err != nil { c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()}); return }
+        c.JSON(http.StatusCreated, cust)
+}
+
+func (cc *CustomerController) Update(c *gin.Context) {
+        id := c.Param("id")
+        var cust models.Customer
+        if err := c.ShouldBindJSON(&cust); err != nil { c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}); return }
+        _, err := cc.db.Exec(`UPDATE customers SET name=$1, email=$2, phone=$3, address=$4, company=$5, updated_at=CURRENT_TIMESTAMP WHERE id=$6`, cust.Name, cust.Email, cust.Phone, cust.Address, cust.Company, id)
+        if err != nil { c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()}); return }
+        c.JSON(http.StatusOK, gin.H{"message": "updated"})
+}
+
+func (cc *CustomerController) Delete(c *gin.Context) {
+        if _, err := cc.db.Exec(`DELETE FROM customers WHERE id=$1`, c.Param("id")); err != nil { c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()}); return }
+        c.JSON(http.StatusOK, gin.H{"message": "deleted"})
+}
