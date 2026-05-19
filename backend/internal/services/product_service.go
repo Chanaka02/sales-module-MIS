@@ -14,7 +14,7 @@ func NewProductService(db *sql.DB) *ProductService {
 }
 
 func (s *ProductService) List() ([]models.Product, error) {
-	rows, err := s.db.Query("SELECT id, name, sku, category, price, stock_quantity FROM products ORDER BY name ASC")
+	rows, err := s.db.Query("SELECT id, name, sku, category, price, stock_qty FROM products ORDER BY name ASC")
 	if err != nil {
 		return nil, err
 	}
